@@ -1,0 +1,51 @@
+#!/bin/bash
+#
+
+declare -a words
+words=(lumberjack, pipecleaner, ...)
+
+i=$(($RANDOM%${#words[@]}))
+word=${words[$i]}
+echo $word
+plo="https://mashape-community-urban-dictionary.p.mashape.com/define?term="
+plo=$plo$word
+
+content=$(curl --get --include $plo \
+  -H 'X-Mashape-Key: tzXQAaaqcBmshZ1quajZQYUDZO0Mp18vJwzjsn7BUu0RdjWiUl' \
+  -H 'Accept: text/plain')
+
+echo $content | tee content.txt
+charat=$(head -c 1 content.txt)
+
+while [ "$charat" != "{" ]
+do
+sed -ie '1s/^.//' content.txt
+charat=$(head -c 1 content.txt)
+
+done
+
+
+
+yolo=$(cat content.txt | jq '.list[0] .word')
+yolo1=$(cat content.txt | jq '.list[0] .definition')
+yolo2=$(cat content.txt | jq '.list[0] .example')
+prinj=$yolo"          "$yolo1"           "$yolo2
+echo $prinj
+
+
+declare -a numbs
+
+numbs=(# # #)
+for nu in "${numbs[@]}"
+do
+echo $nu
+curl -X POST http://textbelt.com/text \
+ -d number=$nu \
+ -d "message=$prinj"
+echo
+done
+
+
+#curl -X POST http://textbelt.com/text \
+# -d number=$nu \
+# -d "message=$prinj"
