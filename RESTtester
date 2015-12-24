@@ -11,7 +11,7 @@ plo="https://mashape-community-urban-dictionary.p.mashape.com/define?term="
 plo=$plo$word
 
 content=$(curl --get --include $plo \
-  -H 'X-Mashape-Key: tzXQAaaqcBmshZ1quajZQYUDZO0Mp18vJwzjsn7BUu0RdjWiUl' \
+  -H 'X-Mashape-Key:...' \
   -H 'Accept: text/plain')
 
 echo $content | tee content.txt
